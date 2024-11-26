@@ -8,7 +8,7 @@ public class ApplicantEvaluatorTests
     [Theory]
     [InlineData(5, true, true)]
     [InlineData(4, true, false)]
-    [InlineData(6, false, false)]
+    [InlineData(6, true, false)]
     [InlineData(10, true, true)]
     public void IsEligible_ReturnsCorrectResult(int yearsOfExperience, bool hasRequiredSkills, bool expected)
     {
@@ -20,6 +20,30 @@ public class ApplicantEvaluatorTests
 
         // Assert
         Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetApplicantDataFromFile))]
+    public void IsEligible_ReturnsCorrectResultWithData(int yearsOfExperience, bool hasRequiredSkills, bool expected)
+    {
+        // Arrange
+        var evaluator = new ApplicantEvaluator();
+
+        // Act
+        var result = evaluator.IsEligible(yearsOfExperience, hasRequiredSkills);
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void IsEligible_WithDefaultValues_ReturnsFalse()
+    {
+        var evaluator = new ApplicantEvaluator();
+
+        var result = evaluator.IsEligible(0, false);
+
+        Assert.False(result);
     }
 
     [Theory]
@@ -61,5 +85,21 @@ public class ApplicantEvaluatorTests
         var result = evaluator.GetApplicationStatus(isEligible, hasJobOffer);
 
         Assert.Equal(expectedStatus, result);
+    }
+
+
+    public static IEnumerable<object[]> GetApplicantDataFromFile()
+    {
+        var data = File.ReadAllLines("C:\\Users\\gokde\\source\\repos\\JobApplication\\JobApplicationLibrary.Tests\\applicants.txt")
+                        .Where(line => !string.IsNullOrWhiteSpace(line))
+                        .Select(line => line.Split(','))
+                        .Select(parts => new object[]
+                        {
+                            int.Parse(parts[0]),      // YearsOfExperience
+                            bool.Parse(parts[1]),     // HasRequiredSkills
+                            bool.Parse(parts[2])      // IsEligible
+                        });
+
+        return data;
     }
 }
