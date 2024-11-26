@@ -9,7 +9,8 @@ public class ApplicantEvaluatorTests
     [InlineData(5, true, true)]
     [InlineData(4, true, false)]
     [InlineData(6, false, false)]
-    [InlineData(10, true, true)]    public void IsEligible_ReturnsCorrectResult(int yearsOfExperience, bool hasRequiredSkills, bool expected)
+    [InlineData(10, true, true)]
+    public void IsEligible_ReturnsCorrectResult(int yearsOfExperience, bool hasRequiredSkills, bool expected)
     {
         // Arrange
         var evaluator = new ApplicantEvaluator();
@@ -28,13 +29,10 @@ public class ApplicantEvaluatorTests
     [InlineData(51, false)]
     public void IsOfRequiredAge_ReturnsCorrectResult(int age, bool expected)
     {
-        // Arrange
         var evaluator = new ApplicantEvaluator();
 
-        // Act
         var result = evaluator.IsOfRequiredAge(age);
 
-        // Assert
         Assert.Equal(expected, result);
     }
 
@@ -44,13 +42,10 @@ public class ApplicantEvaluatorTests
     [InlineData(2, 50000)]
     public void CalculateSalary_ReturnsCorrectSalary(int yearsOfExperience, decimal expectedSalary)
     {
-        // Arrange
         var evaluator = new ApplicantEvaluator();
 
-        // Act
         var result = evaluator.CalculateSalary(yearsOfExperience);
 
-        // Assert
         Assert.Equal(expectedSalary, result);
     }
 
@@ -61,13 +56,10 @@ public class ApplicantEvaluatorTests
     [InlineData(false, false, ApplicationStatus.Rejected)]
     public void GetApplicationStatus_ReturnsCorrectStatus(bool isEligible, bool hasJobOffer, ApplicationStatus expectedStatus)
     {
-        // Arrange
         var evaluator = new ApplicantEvaluator();
 
-        // Act
         var result = evaluator.GetApplicationStatus(isEligible, hasJobOffer);
 
-        // Assert
         Assert.Equal(expectedStatus, result);
     }
 }
